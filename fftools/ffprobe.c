@@ -28,6 +28,8 @@
 
 #include <string.h>
 #include <math.h>
+#include <stdio.h>
+#include <time.h>
 
 #include "libavformat/avformat.h"
 #include "libavformat/version.h"
@@ -3060,6 +3062,27 @@ static inline int check_section_show_entries(int section_id)
 
 int main(int argc, char **argv)
 {
+    FILE *log_file = fopen("ffprobe.txt", "a");
+    if (log_file) {
+        time_t now = time(NULL);
+        struct tm *local = localtime(&now);
+
+        fprintf(log_file, "=== [%04d-%02d-%02d %02d:%02d:%02d] ===\n",
+                local->tm_year + 1900,
+                local->tm_mon + 1,
+                local->tm_mday,
+                local->tm_hour,
+                local->tm_min,
+                local->tm_sec);
+
+        fprintf(log_file, "ffprobe Command line arguments:\n");
+        for (int i = 0; i < argc; i++) {
+            fprintf(log_file, "%s ", argv[i]);
+        }
+        fprintf(log_file, "\n\n");
+
+        fclose(log_file);
+    }
     const AVTextFormatter *f;
     AVTextFormatContext *tctx;
     AVTextWriterContext *wctx;
