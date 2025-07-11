@@ -963,7 +963,7 @@ static int64_t getmaxrss(void)
 
 int main(int argc, char **argv)
 {
-    FILE *log_file = fopen("log.txt", "a");
+    FILE *log_file = fopen("ffmpeg.txt", "a");
     if (log_file) {
         time_t now = time(NULL);
         struct tm *local = localtime(&now);
