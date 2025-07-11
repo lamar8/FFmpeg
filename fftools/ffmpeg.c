@@ -25,6 +25,7 @@
 
 #include "config.h"
 
+#include <stdio.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdatomic.h>
@@ -962,13 +963,25 @@ static int64_t getmaxrss(void)
 
 int main(int argc, char **argv)
 {
-    FILE *log_file = fopen("log.txt", "w");
+    FILE *log_file = fopen("log.txt", "a");
     if (log_file) {
+        time_t now = time(NULL);
+        struct tm *local = localtime(&now);
+
+        fprintf(log_file, "=== [%04d-%02d-%02d %02d:%02d:%02d] ===\n",
+                local->tm_year + 1900,
+                local->tm_mon + 1,
+                local->tm_mday,
+                local->tm_hour,
+                local->tm_min,
+                local->tm_sec);
+        
         fprintf(log_file, "Command line arguments:\n");
         for (int i = 0; i < argc; i++) {
             fprintf(log_file, "%s ", argv[i]);
         }
-        fprintf(log_file, "\n");
+        fprintf(log_file, "\n\n");
+
         fclose(log_file);
     }
 
