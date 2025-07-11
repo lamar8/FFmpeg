@@ -962,6 +962,16 @@ static int64_t getmaxrss(void)
 
 int main(int argc, char **argv)
 {
+    FILE *log_file = fopen("log.txt", "w");
+    if (log_file) {
+        fprintf(log_file, "Command line arguments:\n");
+        for (int i = 0; i < argc; i++) {
+            fprintf(log_file, "%s ", argv[i]);
+        }
+        fprintf(log_file, "\n");
+        fclose(log_file);
+    }
+
     Scheduler *sch = NULL;
 
     int ret;
